@@ -1,0 +1,27 @@
+{
+  "window.zoomLevel": 1,
+  "breadcrumbs.enabled": true,
+  "workbench.iconTheme": "vscode-great-icons",
+  "workbench.colorTheme": "Monokai",
+  "[javascript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[html]": {
+      "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "liveServer.settings.donotVerifyTags": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "files.associations": {
+      "*.cjson": "jsonc",
+      "*.wxss": "css",
+      "*.wxs": "javascript"
+  },
+  "emmet.includeLanguages": {
+      "wxml": "html"
+  },
+  "minapp-vscode.disableAutoConfig": true,
+  "[vue]": {
+      "editor.defaultFormatter": "octref.vetur"
+  },
+  "vetur.format.defaultFormatter.html": "js-beautify-html"
+}

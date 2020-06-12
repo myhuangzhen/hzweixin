@@ -1,0 +1,55 @@
+str 
+
+视频功能：视频拖拽时新打开视频窗口暂未解决
+地图功能：无法弹出视频详情，暂未解决
+         点击摄像头列表，整个页面数据联动 已完成
+         页面功能替换现有接口 已完成
+
+
+{ id:1, pId:0, name:"浙江温州甬台温高速公路有限公司", open:true,url:"jyy"},
+{ id:11, pId:1, name:"01甬台温(G15)K1685+550福向[乐清]",deviceId: "34020000001320002020",
+longitude: 121.1437731,
+latitude: 28.3494765,
+province: "浙江省",
+city: "温州市",
+deviceStatus: "ON",
+expressWay: "G15",
+pileNum: "K1685+550",
+direction: "1"},
+{ id:12, pId:1, name:"02甬台温(G15)K1685+500福向[乐清],deviceId: "34020000001320002021",
+longitude: 121.1437731,
+latitude: 28.3494765,
+province: "浙江省",
+city: "温州市",
+deviceStatus: "ON",
+expressWay: "G15",
+pileNum: "K1685+500",
+direction: "1""},
+{ id:13, pId:1, name:"03甬台温(G15)K1687+680台向[温州],deviceId: "34020000001320002022",
+longitude: 121.1355808,
+latitude: 28.3361944,
+province: "浙江省",
+city: "温州市",
+deviceStatus: "ON",
+expressWay: "G15",
+pileNum: "K1687+680",
+direction: "2""},
+{ id:2, pId:0, name:"安徽新中侨基建投资有限公司"},
+{ id:21, pId:2, name:"济广高速K401+900"},
+{ id:211, pId:21, name:"叶子节点211"},
+{ id:212, pId:21, name:"叶子节点212"},
+{ id:213, pId:21, name:"叶子节点213"},
+{ id:214, pId:21, name:"叶子节点214"},
+{ id:22, pId:2, name:"父节点22 - 折叠"},
+{ id:221, pId:22, name:"叶子节点221"},
+{ id:222, pId:22, name:"叶子节点222"},
+{ id:223, pId:22, name:"叶子节点223"},
+{ id:224, pId:22, name:"叶子节点224"},
+{ id:23, pId:2, name:"父节点23 - 折叠"},
+{ id:231, pId:23, name:"叶子节点231"},
+{ id:232, pId:23, name:"叶子节点232"},
+{ id:233, pId:23, name:"叶子节点233"},
+{ id:234, pId:23, name:"叶子节点234"},
+{ id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+
+
