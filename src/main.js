@@ -21,6 +21,9 @@ import './assets/js/jquery.1.10.2.min.js'
 import './assets/js/jquery.ztree.core.js'
 import './assets/js/jquery.ztree.exedit.js'
 import fullscreen from 'vue-fullscreen'
+import FastClick from 'fastclick'
+import './utils/rem'
+FastClick.attach(document.body)
 Vue.use(fullscreen)
 Vue.prototype.$echarts = echarts
 Vue.use(ElementUI)

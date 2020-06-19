@@ -1,8 +1,8 @@
 <template>
   <div class="hidden-component">
-    <MapInfoWindow ref="mapInfoWindow" :map="map" :width="520" :show="true">
+    <MapInfoWindow ref="mapInfoWindow" class="map-hid"  :map="map" :width="520" :show="true">
       <el-tabs v-model="eventInfoWindowTab" class="event-info-tab">
-        <el-tab-pane v-if="selectEvent !== null" :label="selectEvent" name="eventInfo" style="line-height: 15px;" > <!--style="margi" -->
+        <el-tab-pane v-if="selectEvent !== null" :label="selectEvent" class="lh15" name="eventInfo"> <!--style="margi" -->
           <live-player
             class="video"
             ref="player"
@@ -76,6 +76,9 @@ export default {
 </script>
 
 <style  scoped>
+.lh15 {
+  line-height: 15px;
+}
 .el-tab-pane {
   min-height: 200px;
 }

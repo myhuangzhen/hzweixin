@@ -1,0 +1,405 @@
+<template>
+  <div class="hello">
+    <div style="height:960px;margin:0px 30px 30px 30px" id="container" tabindex="0">
+      <div id="map" class="mchart" style="margin-top: 10px;position: relative; height: 960px;">
+        <div class="treebg" >
+        <div style="color: antiquewhite;width: 400px;height: 70px;line-height: 90px;text-align: center;position: absolute;font-size: 24px;float: left;font-weight:bold" id="left_name">{{name}}</div>
+        <div id="dname" style="display: none;"></div>
+        <div style="width: 400px;height: 760px;top: 70px;text-align: left;position: absolute;font-size: 24px;float: left;">
+          <div style="width:370px;position:relative;top:0px;z-index:1000;filter:alpha(Opacity=80);-moz-opacity:0.9;opacity: 0.9;float:left"  id="test" class="tagtree" >
+            <ul id="treeDemo" class="ztree topnav_box">
+
+            </ul>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import AMap from 'AMap'
+import '../assets/css/zTreeStyle.css'
+import '../assets/js/jquery.1.10.2.min.js'
+import '../assets/js/jquery.ztree.core.js'
+import '../assets/js/jquery.ztree.exedit.js'
+// eslint-disable-next-line no-unused-vars
+import makerimg from '../assets/img/line.png'
+// eslint-disable-next-line no-unused-vars
+import nmakerimg from '../assets/img/line0.png'
+// eslint-disable-next-line camelcase
+import { wgs84_to_gcj02 } from '../assets/js/wgs84_to_gcj02'
+export default {
+  name: 'HelloWorld',
+  data () {
+    return {
+      msg: 'hello',
+      infoWindow: '',
+      name: '省级列表',
+      setting: {
+        check: {
+          enable: true,
+          nocheckInherit: false,
+          chkboxType: { 'Y': 'p', 'N': 's' }
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+        callback: {
+          // beforeClick: this.beforeClick,
+          onClick: this.zTreeOnClick,
+          onCheck: this.zTreeOnCheck
+        }
+      },
+      json: [
+        {
+          name: '全国',
+          value: '1',
+          children: [
+            {
+              name: '北京市',
+              value: '116.405285, 39.904989',
+              children: []
+            },
+            {
+              name: '上海市',
+              value: '121.472644, 31.231706',
+              children: []
+            },
+            {
+              name: '重庆市',
+              value: '106.504962, 29.533155',
+              children: []
+            },
+            {
+              name: '江苏省',
+              value: '118.767413, 32.041544',
+              children: []
+            },
+            {
+              name: '浙江省',
+              value: '120.153576, 30.287459',
+              children: []
+            },
+            {
+              name: '福建省',
+              value: '119.306239, 26.075302',
+              children: []
+            },
+            {
+              name: '安徽省',
+              value: '117.283042, 31.86119',
+              children: []
+            },
+            {
+              name: '江西省',
+              value: '115.892151, 28.676493',
+              children: []
+            },
+            {
+              name: '山东省',
+              value: '117.000923, 36.675807',
+              children: []
+            },
+            {
+              name: '上海市',
+              value: '121.4648, 31.2891',
+              children: []
+            }
+          ]
+        }
+      ],
+      json1: [
+        {
+          name: '浙江温州甬台温高速公路有限公司',
+          value: '1',
+          children: [
+            {
+              name: '仙台 59停',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '63甬台温(G15)K1800+100福向',
+              value: '120.4866099, 27.5890781',
+              children: []
+            },
+            {
+              name: '64甬台温(G15)K1800+100福向',
+              value: '120.4866099, 27.5890781',
+              children: []
+            },
+            {
+              name: '仙台 59停',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '浙江省',
+              value: '120.153576, 30.287459',
+              children: []
+            },
+            {
+              name: '福建省',
+              value: '119.306239, 26.075302',
+              children: []
+            },
+            {
+              name: '安徽省',
+              value: '117.283042, 31.86119',
+              children: []
+            },
+            {
+              name: '江西省',
+              value: '115.892151, 28.676493',
+              children: []
+            },
+            {
+              name: '山东省',
+              value: '117.000923, 36.675807',
+              children: []
+            },
+            {
+              name: '上海市',
+              value: '121.4648, 31.2891',
+              children: []
+            }
+          ]
+        }
+      ],
+      json2: [
+        {
+          name: '重庆沪渝高速公路有限公司',
+          value: '1',
+          children: [
+            {
+              name: '沪渝南线G5021垭口隧道K172+000左13',
+              uuid: '3e28bcf8-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '02甬台温(G15)K1685+500福向[乐清]',
+              uuid: '3e28c126-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '03甬台温(G15)K1687+680台向[温州]',
+              uuid: '3e28e184-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '04甬台温(G15)K1687+830台向[乐清]',
+              uuid: '3e28e1df-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '03甬台温(G15)K1687+680台向[温州]',
+              uuid: '3e28e235-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            }
+          ]
+        }
+      ],
+      json22: [
+        {
+          name: '重庆沪渝高速公路有限公司',
+          value: '1',
+          children: [
+            {
+              name: '沪渝南线G5021垭口隧道K172+000左13',
+              uuid: '3e28bcf8-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '02甬台温(G15)K1685+500福向[乐清]',
+              uuid: '3e28c126-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '03甬台温(G15)K1687+680台向[温州]',
+              uuid: '3e28e184-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '04甬台温(G15)K1687+830台向[乐清]',
+              uuid: '3e28e1df-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            },
+            {
+              name: '03甬台温(G15)K1687+680台向[温州]',
+              uuid: '3e28e235-8c7f-11ea-9aaa-94292f6ec45f',
+              department: '重庆沪渝高速公路有限公司',
+              value: '120.5211157, 27.6356351',
+              children: []
+            }
+          ]
+        }
+      ]
+    }
+  },
+  mounted () {
+    this.init()
+    this.freshArea()
+  },
+  methods: {
+    init: function () {
+      this.map = new AMap.Map('container', {
+        center: [103.759759, 38.356381],
+        resizeEnable: true,
+        zoom: 5,
+        zooms: [5, 12],
+        mapStyle: 'amap://styles/e55c6b60d2a692686af99f1a44c4851d'
+        // mapStyle: 'amap://styles/darkblue'
+      })
+      // AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
+      //   map.addControl(new AMap.ToolBar())
+      //   map.addControl(new AMap.Scale())
+      // })
+      new AMap.DistrictSearch({
+        extensions: 'all',
+        subdistrict: 0
+      }).search('中国', function (status, result) {
+        // 外多边形坐标数组和内多边形坐标数组
+        var outer = [
+          new AMap.LngLat(-360, 90, true),
+          new AMap.LngLat(-360, -90, true),
+          new AMap.LngLat(360, -90, true),
+          new AMap.LngLat(360, 90, true)
+        ]
+        var holes = result.districtList[0].boundaries
+        var pathArray = [
+          outer
+        ]
+        pathArray.push.apply(pathArray, holes)
+        var polygon = new AMap.Polygon({
+          pathL: pathArray,
+          strokeColor: '#06254d',
+          strokeWeight: 1,
+          fillColor: '#06254d',
+          fillOpacity: 0.8
+        })
+        polygon.setPath(pathArray)
+        // eslint-disable-next-line no-undef
+        this.map.add(polygon)
+      })
+      // 滚动地图根据级别显示左侧树
+    },
+    freshArea: function () {
+      let zTree = $.fn.zTree.init($('#treeDemo'), this.setting, this.json)
+      zTree.expandAll(false)
+      zTree.expandNode(zTree.getNodes()[0], true, false, true)
+    },
+    zTreeOnClick: function (event, treeId, treeNode) {
+      var lnglat = treeNode.value
+      var result = lnglat.split(',')
+      this.map.setZoom(9)
+      this.map.setCenter([result[0], result[1]])
+      // eslint-disable-next-line eqeqeq
+      if (this.name == '省级列表') {
+        this.itree(this.json2, '路段列表')
+        this.map.setZoom(12)
+      // eslint-disable-next-line eqeqeq
+      } else if (this.name == '路段列表') {
+        this.itree(this.json22, 'XX路段列表')
+        this.map.setZoom(14)
+        this.initmarker()
+      }
+    },
+    initmarker: function () {
+      // eslint-disable-next-line no-unused-vars
+      var marker
+      var arrdata1
+      var markers = []
+      let windows = []
+      let thismap = this
+      // eslint-disable-next-line no-unused-vars
+      var infoWindow = new AMap.InfoWindow({
+        offset: new AMap.Pixel(0, -30)
+      })
+      this.map.clearMap()
+      $.get('http://47.92.121.146:8001/device/selectDeviceLocationInfo?subordinateUnit=%E9%87%8D%E5%BA%86%E6%B8%9D%E9%BB%94%E9%AB%98%E9%80%9F%E5%85%AC%E8%B7%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&keyword=&id=240A2D4E00FCCC470E013FDADD5BF919', {
+
+      }).then(data => {
+        arrdata1 = data.deviceLocationInfo
+        if (arrdata1.length === 0) {
+
+        } else {
+          arrdata1.forEach((item, index) => {
+            console.log(item)
+            let transfromLngLat = wgs84_to_gcj02(item.longitude, item.latitude)
+            markers.push({
+              position: [transfromLngLat[0], transfromLngLat[1]],
+              icon: makerimg,
+              events: {
+                click () {
+                  thismap.windows.forEach(window => {
+                    window.visible = false
+                  })
+                  thismap.window = thismap.windows[index]
+                  thismap.$nextTick(() => {
+                    thismap.window.visible = true
+                  })
+                }
+              }
+            })
+            windows.push({
+              position: [item.longitude, item.latitude],
+              content: '<div>1231313</div>',
+              offset: [5, -15], // 窗体偏移
+              visible: false // 初始是否显示
+            })
+          })
+          //  加点
+          this.markers = markers
+          //  加弹窗
+          this.windows = windows
+        }
+      }).then(ret => {
+      })
+        .always(() => {
+
+        })
+    },
+    itree: function (type, name) {
+      this.name = name
+      var zTree = $.fn.zTree.init($('#treeDemo'), this.setting, type)
+      zTree.expandAll(false)
+      zTree.expandNode(zTree.getNodes()[0], true, false, true)
+    }
+    // zTreeOnCheck: function (event, treeId, treeNode) {
+    //   console.log(treeNode.tId + ', ' + treeNode.name + ',' + treeNode.checked)
+    //   let zTree = $.fn.zTree.getZTreeObj('treeDemo')
+    //   checkCount = zTree.getCheckedNodes(true).length // 选中
+    //   nocheckCount = zTree.getCheckedNodes(false).length // 未选中
+    //   changeCount = zTree.getChangeCheckedNodes().length // 获取输入框勾选状态被改变的节点集合（与原始数据 checkedOld 对比）
+    //   var checkedNames = []
+    //   var checkedIds = []
+    //   for (var i = 0; i <= zTree.getCheckedNodes(true).length - 1; i++) {
+    //     checkedIds.push(zTree.getCheckedNodes(true)[i].id)
+    //     checkedNames.push(zTree.getCheckedNodes(true)[i].name)
+    //   };
+    // }
+  }
+}
+</script>

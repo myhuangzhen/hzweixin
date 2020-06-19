@@ -1,32 +1,73 @@
 <template>
-<div>
-  <div class="row hidden-xs text-center">
+  <div>
+    <div class="row text-center">
       <el-button-group class="player-btn-group">
-        <el-button type="primary" size="medium" v-for="list in playerBtnGroup" :key="list.num" @click.prevent="setPlayerLength(list.num)" :class="{'active' : playerLength == list.num}">{{list.name}}</el-button>
-        <el-button type="button" id="full-btn-medium" size="medium" @click.prevent="fullscreen" title="全屏显示"><i class="fa fa-arrows-alt"></i></el-button>
+        <el-button
+          type="primary"
+          size="medium"
+          v-for="list in playerBtnGroup"
+          :key="list.num"
+          @click.prevent="setPlayerLength(list.num)"
+          :class="{'active' : playerLength == list.num}"
+        >{{list.name}}</el-button>
+        <el-button
+          type="button"
+          id="full-btn-medium"
+          size="medium"
+          @click.prevent="fullscreen"
+          title="全屏显示"
+        ><i class="fa fa-arrows-alt"></i></el-button>
       </el-button-group>
-  </div>
-  <br class="hidden-xs">
-  <div class="view-list row">
-    <div class="video-show col-xs-12 col-sm-12"><!--video-show col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 -->
-      <div>
-        <div class="no-margin no-padding video"  id="video" style="padding-right: 0px;padding-left: 0px" :style="bj" v-for="(player,index) in players" :key="index" @mousemove="resetCloseTimer(player)" @touchstart="resetCloseTimer(player)" :class="{'col-sm-12': playerLength == 1,'col-sm-6': playerLength == 4,'col-sm-4': playerLength == 9,'col-sm-3': playerLength == 16,'classIndex':index == numindex}" @click="contorl(index)">
-          <LivePlayer :videoUrl="player.url" :name="player.name" :uuid="player.uuid" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..."  :loading.sync="player.bLoading" @message="$message" ></LivePlayer>
-          <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo(index)">关闭</div>
-          <!-- <div class="video-close" v-show="!player.url && player.bCloseShow" v-on:click="selectChannel(index,player)">选择通道</div> -->
+    </div>
+    <div class="none-h18"> </div>
+    <div class="view-list-body row">
+      <div class="video-show col-xs-12 col-sm-12">
+        <!--video-show col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 -->
+        <div>
+          <div
+            class="no-margin no-padding video"
+            id="video"
+            style="padding-right: 0px;padding-left: 0px"
+            :style="bj"
+            v-for="(player,index) in players"
+            :key="index"
+            @mousemove="resetCloseTimer(player)"
+            @touchstart="resetCloseTimer(player)"
+            :class="{'col-sm-12': playerLength == 1,'col-sm-6': playerLength == 4,'col-sm-4': playerLength == 9,'col-sm-3': playerLength == 16,'classIndex':index == numindex}"
+            @click="contorl(index)"
+            @dblclick="ondblclick(index)"
+          >
+            <LivePlayer
+              :videoUrl="player.url"
+              :name="player.name"
+              :uuid="player.uuid"
+              live
+              muted
+              stretch
+              v-loading="player.bLoading"
+              element-loading-text="加载中..."
+              :loading.sync="player.bLoading"
+              @message="$message"
+            ></LivePlayer>
+            <div
+              class="video-close"
+              v-show="player.url && player.bCloseShow"
+              v-on:click="closeVideo(index)"
+            >关闭</div>
+            <!-- <div class="video-close" v-show="!player.url && player.bCloseShow" v-on:click="selectChannel(index,player)">选择通道</div> -->
+          </div>
         </div>
       </div>
     </div>
+    <br>
   </div>
-  <br>
-</div>
 </template>
 
 <script>
-import LivePlayer from '@liveqing/liveplayer'
+import LivePlayer from "@liveqing/liveplayer";
 // eslint-disable-next-line no-unused-vars
-import _ from 'lodash'
-import { mapState } from 'vuex'
+import _ from "lodash";
+import { mapState } from "vuex";
 // import draggable from "vuedraggable";
 
 export default {
@@ -34,181 +75,216 @@ export default {
     LivePlayer
     // draggable
   },
-  props: ['parentData'],
-  data () {
+  props: ["parentData"],
+  data() {
     return {
-      urlData: '',
+      urlData: "",
       players: [],
       playerLength: 1,
-      channelListDlgTitle: '',
-      protocol: '',
-      numindex: '',
+      channelListDlgTitle: "",
+      protocol: "",
+      numindex: 0,
       bj: {
-        background: 'url(' + require('../assets/img/video.png') + ') no-repeat 0 0/100% auto'
+        background:
+          "url(" +
+          require("../assets/img/video.png") +
+          ") no-repeat 0 0/100% auto"
         // + 'no-repeat 100% auto center scroll)'
         // 'no-repeat center center'
         // backgroundImage: 'url(' + require('../assets/img/video.jpg') + ')'
       }
-    }
+    };
   },
   watch: {
     parentData: {
-      handler (newData, oldData) {
+      handler(newData, oldData) {
         // $('#video').first().remove()
-        this.urlData = newData
-        for (var i = 0; i < this.players.length; i++) {
-          if (this.players[i].url === '') {
-          // this.players[i].push({
-          //   url: newData,
-          //   bLoading: false,
-          //   timer: 0,
-          //   bCloseShow: false,
-          //   closeTimer: 0
-          // })
-          // this.player[i].url = newData
-          // this.player[i].url = newData
-            this.players[i].name = 'ffff'
-            this.players[i].uuid = newData[0]
-            this.players[i].url = newData[1]
-            break
-          }
-        }
+        this.urlData = newData;
+        // for (var j = 0; j < $('#video').length; j++) {
+        //   alert(j.hasClass('classIndex'))
+        //   // if (this.hasClass('classIndex')) {
+        //   //   alert('6666666666')
+        //   // } else {
+        //   //   alert('99999999')
+        //   //   this.players[j].name = 'ffff'
+        //   //   this.players[j].uuid = newData[0]
+        //   //   this.players[j].url = newData[1]
+        //   // }
+        // }
+        // for (var i = 0; i < this.players.length; i++) {
+        //   if (this.players[i].url === '') {
+        //   // this.players[i].push({
+        //   //   url: newData,
+        //   //   bLoading: false,
+        //   //   timer: 0,
+        //   //   bCloseShow: false,
+        //   //   closeTimer: 0
+        //   // })
+        //   // this.player[i].url = newData
+        //   // this.player[i].url = newData
+        this.players[this.numindex].name = "ffff";
+        this.players[this.numindex].uuid = newData[0];
+        this.players[this.numindex].url = newData[1];
+        //     break
+        //   }
+        // }
       },
       deep: true
     }
   },
   computed: {
-    ...mapState(['userInfo', 'serverInfo']),
-    playerBtnGroup () {
-      var list = [{
-        num: 1,
-        name: '单屏'
-      }, {
-        num: 4,
-        name: '四分屏'
-      }, {
-        num: 9,
-        name: '九分屏'
-      }
-      ]
+    ...mapState(["userInfo", "serverInfo"]),
+    playerBtnGroup() {
+      var list = [
+        {
+          num: 1,
+          name: "单屏"
+        },
+        {
+          num: 4,
+          name: "四分屏"
+        },
+        {
+          num: 9,
+          name: "九分屏"
+        }
+      ];
       // if (!this.isIE()) {
       //   list.push({
       //     num: 16,
       //     name: '十六分屏'
       //   })
       // }
-      return list
+      return list;
     }
   },
-  mounted () {
+  mounted() {
     // this.setPlayerLength(1)
-    this.clearVideos()
-    this.setPlayerLength(this.playerLength)
+    this.clearVideos();
+    this.setPlayerLength(this.playerLength);
   },
   methods: {
-    contorl: function (index) {
-      this.numindex = index
-      this.$parent.fatherMethod(this.players[index].uuid)
+    ondblclick(index) {
+      if (this.urlData) {
+        this.players[index].name = "ffff";
+        this.players[index].uuid = this.urlData[0];
+        this.players[index].url = this.urlData[1];
+        this.urlData = "";
+      }
     },
-    getQueryString (name, defVal = '') {
-      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
-      var r = window.location.search.substr(1).match(reg)
+    contorl: function(index) {
+      this.numindex = index;
+      this.$parent.fatherMethod(this.players[index].uuid);
+    },
+    getQueryString(name, defVal = "") {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
       if (r != null) {
-        return unescape(r[2])
+        return unescape(r[2]);
       }
-      return defVal
+      return defVal;
     },
-    clearVideos () {
+    clearVideos() {
       for (var idx in this.players) {
-        this.closeVideo(idx)
+        this.closeVideo(idx);
       }
     },
-    setPlayerLength (playerNum) {
+    setPlayerLength(playerNum) {
+      this.numindex = 0;
       // eslint-disable-next-line eqeqeq
       if (playerNum == this.players.length) {
-        return
+        return;
       }
-      this.clearVideos()
-      this.players = []
-      this.playerLength = playerNum
+      this.clearVideos();
+      this.players = [];
+      this.playerLength = playerNum;
       for (let index = 0; index < this.playerLength; index++) {
         this.players.push({
-          name: '',
-          url: '',
+          name: "",
+          url: "",
           // 'http://117.141.33.219:1000/sms/34020000002020000001/flv/hls/34020000001320080146_34020000001320000001.flv?auth_key=1590140830576-0-0-1a03f9e4b3b75f88a2247a4722abac5e',
           bLoading: false,
           timer: 0,
           bCloseShow: false,
           closeTimer: 0
-        })
+        });
       }
     },
-    play (index, channel) {
-      var i = 0
-      var player = null
+    play(index, channel) {
+      var i = 0;
+      var player = null;
       for (var _player of this.players) {
         if (index === i) {
-          player = _player
-          break
+          player = _player;
+          break;
         }
-        i++
+        i++;
       }
       if (!player) {
         this.$message({
-          type: 'error',
-          message: '当前播放窗口已被占满！'
-        })
-        return
+          type: "error",
+          message: "当前播放窗口已被占满！"
+        });
+        return;
       }
-      player.bLoading = true
-      $.get('/service/video.GetCameraPlayURL?department=' + channel.subordinateUnit + '&cameraNum=' + channel.cameraNum + '&videoType=0&user=JTB000202001200001&id=' + sessionStorage.getItem('token'), {
-      }).then(stream => {
-        var videoUrl = stream.videoRequestUrl[0].flv_url
-        if (this.flvSupported()) {
-          if (stream.WS_FLV && i > 0) {
-            videoUrl = stream.WS_FLV
-          } else if (stream.FLV) {
-            videoUrl = stream.FLV
+      player.bLoading = true;
+      $.get(
+        "/service/video.GetCameraPlayURL?department=" +
+          channel.subordinateUnit +
+          "&cameraNum=" +
+          channel.cameraNum +
+          "&videoType=0&user=JTB000202001200001&id=" +
+          sessionStorage.getItem("token"),
+        {}
+      )
+        .then(stream => {
+          var videoUrl = stream.videoRequestUrl[0].flv_url;
+          if (this.flvSupported()) {
+            if (stream.WS_FLV && i > 0) {
+              videoUrl = stream.WS_FLV;
+            } else if (stream.FLV) {
+              videoUrl = stream.FLV;
+            }
           }
-        }
-        if (this.isIE() && i > 0) {
-          videoUrl = stream.HLS
-        }
-        var _protocol = String(this.protocol).toUpperCase()
-        switch (_protocol) {
-          case 'RTMP':
-            videoUrl = stream.RTMP || ''
-            break
-          case 'HLS':
-            videoUrl = stream.HLS || ''
-            break
-          case 'FLV':
-            videoUrl = stream.FLV || ''
-            break
-          case 'WS_FLV':
-            videoUrl = stream.WS_FLV || ''
-            break
-        }
-        player.url = videoUrl
-        this.resetCloseTimer(player)
-      }).fail(() => {
-        player.bLoading = false
-      })
+          if (this.isIE() && i > 0) {
+            videoUrl = stream.HLS;
+          }
+          var _protocol = String(this.protocol).toUpperCase();
+          switch (_protocol) {
+            case "RTMP":
+              videoUrl = stream.RTMP || "";
+              break;
+            case "HLS":
+              videoUrl = stream.HLS || "";
+              break;
+            case "FLV":
+              videoUrl = stream.FLV || "";
+              break;
+            case "WS_FLV":
+              videoUrl = stream.WS_FLV || "";
+              break;
+          }
+          player.url = videoUrl;
+          this.resetCloseTimer(player);
+        })
+        .fail(() => {
+          player.bLoading = false;
+        });
     },
-    closeVideo: function (idx) {
-      var player = this.players[idx]
+    closeVideo: function(idx) {
+      var player = this.players[idx];
       if (!player) {
-        return
+        return;
       }
       if (player.closeTimer) {
-        clearTimeout(player.closeTimer)
-        player.closeTimer = 0
+        clearTimeout(player.closeTimer);
+        player.closeTimer = 0;
       }
-      player.bCloseShow = false
-      player.bloading = false
-      player.url = ''
+      player.bCloseShow = false;
+      player.bloading = false;
+      player.url = "";
     },
-    fullscreen () {
+    fullscreen() {
       // if (this.isMobile()) {
       //   this.$message({
       //     type: 'error',
@@ -218,41 +294,41 @@ export default {
       // }
       this.$fullscreen.enter(this.$el.querySelector(`.video-show > div`), {
         wrap: false
-      })
+      });
     },
-    resetCloseTimer (player) {
-      player.bCloseShow = true
+    resetCloseTimer(player) {
+      player.bCloseShow = true;
       if (player.closeTimer) {
-        clearTimeout(player.closeTimer)
+        clearTimeout(player.closeTimer);
       }
       player.closeTimer = setTimeout(() => {
-        player.bCloseShow = false
-      }, 2000)
+        player.bCloseShow = false;
+      }, 2000);
     }
   },
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.protocol = vm.getQueryString('protocol', '')
-    })
+      vm.protocol = vm.getQueryString("protocol", "");
+    });
   },
-  beforeRouteUpdate (to, from, next) {
-    this.clearVideos()
-    this.protocol = this.getQueryString('protocol', '')
-    next()
+  beforeRouteUpdate(to, from, next) {
+    this.clearVideos();
+    this.protocol = this.getQueryString("protocol", "");
+    next();
   },
   // beforeDestroy () {
   //   this.clearVideos()
   // },
-  beforeRouteLeave (to, from, next) {
-    this.clearVideos()
-    next()
+  beforeRouteLeave(to, from, next) {
+    this.clearVideos();
+    next();
   }
-}
+};
 </script>
-<style lang="less" scoped>
+<style lang="less">
 //@import url(~assets/styles/variables.less);
-@import '../assets/styles/variables.less';
-.view-list {
+@import "../assets/styles/variables.less";
+.view-list-body {
   .video-show {
     .video {
       border: 1px solid #fff;
@@ -261,6 +337,24 @@ export default {
     .col-sm-12 {
       &:nth-child(1) {
         border: 0;
+      }
+
+       height: 660px;
+
+      .player-wrapper {
+        .video-wrapper {
+          height: 660px;
+        }
+        .video-inner{
+          height: 660px;
+        }
+        .alt{
+          height: 660px;
+
+          td {
+            font-size: 14px !important;
+          }
+        }
       }
     }
 
@@ -284,6 +378,25 @@ export default {
       &:nth-child(4) {
         border-bottom-color: transparent;
       }
+
+      height: 311px;
+      .player-wrapper {
+        .video-wrapper {
+          height: 351px;
+        }
+        .video-inner{
+          height: 351px;
+        }
+        .alt{
+          height: 351px;
+
+          td {
+            font-size: 14px !important;
+          }
+        }
+      }
+
+
     }
 
     .col-sm-4 {
@@ -309,6 +422,22 @@ export default {
       &:nth-child(4),
       &:nth-child(7) {
         border-left-color: transparent;
+      }
+
+      height: 223px;
+      .player-wrapper {
+        .video-wrapper {
+          height: 223px;
+        }
+        .video-inner{
+          height: 223px;
+        }
+        .alt{
+          height: 223px;
+          td {
+            font-size: 14px !important;
+          }
+        }
       }
     }
 
@@ -343,6 +472,10 @@ export default {
     }
   }
 }
+
+  .none-h18 {
+    height: 28px;
+  }
 
 .fullscreen {
   width: 100% !important;
@@ -381,8 +514,8 @@ export default {
   }
 }
 .classIndex {
-    border:1px solid red !important;
-  }
+  border: 1px solid red !important;
+}
 // .video-wrapper .alt{
 //   border:1px solid red !important;
 //   background: url('../assets/img/video.jpg');

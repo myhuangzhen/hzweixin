@@ -1,6 +1,6 @@
 <template>
   <div class="hidden-component">
-    <div v-show="showMapInfoWindow" ref="mainWin" style="width:520px;" class="amap-window-container">
+    <div v-show="showMapInfoWindow" ref="mainWin" class="amap-window-container">
 
       <div class="amap-window-ex">
         <div class="win-main">
@@ -121,6 +121,9 @@ export default {
 </script>
 
 <style scoped>
+  .amap-window-container {
+    width:520px;
+  }
   .amap-window-ex {
     border: 1px solid #2071a7;
     background-color: rgba(12, 57, 89, 0.96);

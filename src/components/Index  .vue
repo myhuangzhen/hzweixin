@@ -1,12 +1,12 @@
 <template>
-  <div class="hello">
-    <div style="height:960px;margin:0px 30px 30px 30px" id="container" tabindex="0">
-      <div id="map" class="mchart" style="margin-top: 10px;position: relative; height: 960px;">
+  <div class="hello other-index">
+    <div class="container-index" id="container" tabindex="0">
+      <div id="map" class="mchart container-mchart">
         <div class="treebg" >
-        <div style="color: antiquewhite;width: 400px;height: 70px;line-height: 90px;text-align: center;position: absolute;font-size: 24px;float: left;font-weight:bold" id="left_name">{{name}}</div>
-        <div id="dname" style="display: none;"></div>
-        <div style="width: 400px;height: 760px;top: 70px;text-align: left;position: absolute;font-size: 24px;float: left;">
-          <div style="width:370px;position:relative;top:0px;z-index:1000;filter:alpha(Opacity=80);-moz-opacity:0.9;opacity: 0.9;float:left"  id="test" class="tagtree" >
+        <div class="treebg-div" id="left_name">{{name}}</div>
+        <div id="dname" class="none-div"></div>
+        <div class="dname-div">
+          <div  id="test" class="tagtree hello-div" >
             <ul id="treeDemo" class="ztree topnav_box">
 
             </ul>
@@ -418,3 +418,51 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+.other-index {
+  .container-index {
+    height:960px;
+    margin:0px 30px 30px 30px;
+
+    .container-mchart {
+      margin-top: 10px;
+      position: relative;
+      height: 960px;
+    }
+    .treebg-div {
+      color: antiquewhite;
+      width: 400px;height: 70px;
+      line-height: 90px;
+      text-align: center;
+      position: absolute;
+      font-size: 24px;
+      float: left;
+      font-weight:bold
+    }
+
+    .none-div {
+      display: none;
+    }
+    .dname-div {
+      width: 400px;
+      height: 760px;
+      top: 70px;
+      text-align: left;
+      position: absolute;
+      font-size: 24px;
+      float: left;
+    }
+    .hello-div {
+      width:370px;
+      position:relative;
+      top:0px;
+      z-index:1000;
+      filter:alpha(Opacity=80);
+      -moz-opacity:0.9;
+      opacity: 0.9;
+      float:left;
+    }
+  }
+}
+</style>
