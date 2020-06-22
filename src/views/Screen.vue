@@ -1262,7 +1262,7 @@ table tr:nth-child(even) {
     top: 730px;
     right: 30px;
     width: 388px;
-    height: 245px;
+    height: 240px;
 
     .section6-main {
       height: 100%;
@@ -1284,7 +1284,7 @@ table tr:nth-child(even) {
       position: absolute;
       padding: 0px 0px;
       right: 35px;
-      top: 40px;
+      top: 20px;
       width: 154px;
       height: 201px;
       .block-item {

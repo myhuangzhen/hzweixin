@@ -380,6 +380,10 @@ export default {
     height: 960px;
     margin: 0px 30px 30px 30px;
 
+    .amap-info-content {
+      line-height: 32px;
+    }
+
     .body-container-mchart {
       margin-top: 10px;
       position: relative;

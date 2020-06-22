@@ -508,6 +508,10 @@ export default {
     -webkit-transform: translate3d(0, 0, 0);
   }
 
+  .el-tabs__header {
+    background: transparent;
+  }
+
   .el-tabs__item {
     padding: 0 20px;
     height: 40px;
