@@ -20,6 +20,20 @@ const postcss = px2rem({
 })
   // 使用等比适配插件 
   // module.exports = { lintOnSave: true, css: { loaderOptions: { postcss: { plugins: [ postcss ] } } } }
+
+let configPath
+
+switch(argv.config) {
+  case 'dev': 
+  configPath = path.join('./', 'urlConfig/dev.js')
+  break
+  case 'rel':
+  configPath = path.join('./', 'urlConfig/rel.js')
+  break
+  case 'online':
+  configPath =  path.join('./', 'urlConfig/online.js')
+  break
+}
 module.exports = {
     devServer: {
       proxy: 'http://47.92.121.146:9000'

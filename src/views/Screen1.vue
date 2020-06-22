@@ -339,17 +339,17 @@ export default {
         border: 0;
       }
 
-       height: 660px;
+       height: 615px;
 
       .player-wrapper {
         .video-wrapper {
-          height: 660px;
+          height: 610px;
         }
         .video-inner{
-          height: 660px;
+          height: 610px;
         }
         .alt{
-          height: 660px;
+          height: 610px;
 
           td {
             font-size: 14px !important;
@@ -379,16 +379,16 @@ export default {
         border-bottom-color: transparent;
       }
 
-      height: 311px;
+      height: 316px;
       .player-wrapper {
         .video-wrapper {
-          height: 351px;
+          height: 311px;
         }
         .video-inner{
-          height: 351px;
+          height: 311px;
         }
         .alt{
-          height: 351px;
+          height: 311px;
 
           td {
             font-size: 14px !important;
@@ -424,16 +424,16 @@ export default {
         border-left-color: transparent;
       }
 
-      height: 223px;
+      height: 199px;
       .player-wrapper {
         .video-wrapper {
-          height: 223px;
+          height: 193px;
         }
         .video-inner{
-          height: 223px;
+          height: 193px;
         }
         .alt{
-          height: 223px;
+          height: 193px;
           td {
             font-size: 14px !important;
           }
@@ -515,6 +515,7 @@ export default {
 }
 .classIndex {
   border: 1px solid red !important;
+  background: none !important;
 }
 // .video-wrapper .alt{
 //   border:1px solid red !important;

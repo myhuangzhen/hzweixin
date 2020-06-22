@@ -57,6 +57,7 @@
 // import '@/assets/css/style-anjian.css'
 import axios from "axios";
 import Utils from "../assets/js/utils.js";
+import service from "../service/request";
 export default {
   name: "login",
   data() {
@@ -104,6 +105,27 @@ export default {
       const params = new URLSearchParams();
       params.append("username", this.account);
       params.append("password", pass);
+      // service.login(params).then(response => {
+      //   console.log(response);
+      //   if (response.code === "200") {
+      //       that.$message({
+      //         message: '登录成功',
+      //         type: 'success'
+      //       })
+      //       var authorization = response.Authorization;
+      //       that.$store.commit("set_token", authorization);
+      //       // 登录成功跳转页面
+            
+      //       that.$router.push({ path: "/home" });
+      //     } else if (that.account === "" || pass === "") {
+      //       that.$message("请输入用户名、密码");
+      //     } else {
+      //       that.$message.error("登录失败,用户名或密码错误");
+      //     }
+      // }).catch(err => {
+      //   console.log(err);
+      //   that.$message.error("登录失败,用户名或密码错误");
+      // })
       axios
         .create({
           baseURL: "http://47.92.121.146:9000",
@@ -115,6 +137,7 @@ export default {
           }
         })
         .then(function(response) {
+          console.log(params);
           if (response.data.code === "200") {
             // that.$message({
             //   message: '登录成功',
@@ -127,6 +150,7 @@ export default {
             var authorization = response.headers.authorization;
             that.$store.commit("set_token", authorization);
             // 登录成功跳转页面
+            
             that.$router.push({ path: "/home" });
             // this.$router.push('/home')
           } else if (that.account === "" || pass === "") {
@@ -308,6 +332,7 @@ export default {
    margin-bottom:10px;
 }
 .btn-submit {
+  cursor: pointer;
   width:300px; 
   font-size:20px;  
   margin-top:30px;

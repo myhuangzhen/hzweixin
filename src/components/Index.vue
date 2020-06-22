@@ -53,7 +53,10 @@
     <div class="header">
       <div class="h-wrapper">
         <div class="logo">
-          <img src="@/assets/img/title.png" />
+          <img
+            class="logo-img"
+            src="@/assets/img/title.png"
+          />
         </div>
         <div class="other-info">
           <span class="date">{{ nowDate + ' ' + nowTime }}</span>
@@ -68,7 +71,7 @@
         </div>
         <div class="btn-group">
           <a
-            class="btn1"
+            class="btn1 btn-a"
             style="background-color: rgba(0,153,255,.2);border: 1px solid rgba(0,153,255,.8);color: #ffffff;"
             @click="logout"
           >退出</a>
@@ -79,7 +82,7 @@
                     </ul>
                 </div> -->
           <div class="select smenu">
-            <span>菜单</span>
+            <span class="smenu-span">菜单</span>
           </div>
         </div>
       </div>
@@ -529,6 +532,36 @@ export default {
 
   .lh15 {
     line-height: 15px;
+  }
+  .header {
+    .h-wrapper {
+      .logo {
+        width: 996px;
+
+        .logo-img {
+          display: block;
+          height: 64px;
+        }
+      }
+    }
+    .btn-group {
+      position: absolute;
+      right: 30px;
+      top: 30px;
+      color: #fff;
+      .btn-a {
+        display: inline-block;
+        padding: 12px 25px;
+        font-size: 18px;
+        vertical-align: middle;
+      }
+    }
+    .smenu {
+      .smenu-span {
+        height: 40px;
+        line-height: 47px;
+      }
+    }
   }
 
   .menu-container:before {

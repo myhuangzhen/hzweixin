@@ -405,6 +405,25 @@ export default {
       display: none;
     }
 
+    label {
+      font-size: 16px;
+      margin-right: 8px;
+      margin-bottom: 3px;
+    }
+
+    .el-tabs__header {
+      padding: 0;
+      position: relative;
+      margin: 0 0 15px;
+      font-size: 16px;
+    }
+
+    .el-tabs__nav-scroll {
+      overflow: hidden;
+      height: 36px;
+      padding-left: 8px;
+    }
+
     .map-img {
       display: block;
       width: 48px;

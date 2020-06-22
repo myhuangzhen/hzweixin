@@ -986,7 +986,7 @@ table tr:nth-child(even) {
     top: 9px;
     left: 30px;
     width: 388px;
-    height: 1040px;
+    height: 960px;
   }
   .section-title {
     position: absolute;
@@ -1016,7 +1016,7 @@ table tr:nth-child(even) {
 
   .search-body {
     width: 360px;
-    height: 920px;
+    height: 840px;
     top: 50px;
     text-align: left;
     position: absolute;
@@ -1045,7 +1045,7 @@ table tr:nth-child(even) {
     float: left;
 
     .topnav_box {
-      height: 900px;
+      height: 820px;
     }
   }
 
@@ -1058,7 +1058,7 @@ table tr:nth-child(even) {
     .section-mid-body {
       .mchart {
         position: relative;
-        height: 760px;
+        height: 700px;
       }
     }
 
@@ -1068,7 +1068,7 @@ table tr:nth-child(even) {
 
     .mid-btn {
       position: relative;
-      height: 258px;
+      height: 238px;
 
       .mid-btn-div {
         height: 100%;
@@ -1093,7 +1093,7 @@ table tr:nth-child(even) {
     top: 9px;
     right: 30px;
     width: 388px;
-    height: 750px;
+    height: 700px;
 
     .section-right-body {
       position: relative;
@@ -1227,35 +1227,42 @@ table tr:nth-child(even) {
 
     .table-body {
       position: relative;
-      height: 460px;
+      height: 400px;
 
       .table-body-div {
         position: relative;
-        height: 425px;
+        height: 350px;
         font-size: 14px;
         color: #ffffff;
         overflow-x: auto;
       }
 
       .table-body-div::-webkit-scrollbar {
-    width: 4px; /*对垂直流动条有效*/
-  }
-  .table-body-div::-webkit-scrollbar-thumb{
-    background-color: #409eff;
-  }
+        width: 4px; /*对垂直流动条有效*/
+      }
+      .table-body-div::-webkit-scrollbar-thumb {
+        background-color: #409eff;
+      }
 
       .table-inner {
         width: 92%;
         text-align: left;
+
+        td {
+          padding: 0;
+          height: 36px;
+          padding-top: 4px;
+          padding-left: 8px;
+        }
       }
     }
   }
 
   .section-btn {
-    top: 790px;
+    top: 730px;
     right: 30px;
     width: 388px;
-    height: 278px;
+    height: 245px;
 
     .section6-main {
       height: 100%;
@@ -1279,7 +1286,7 @@ table tr:nth-child(even) {
       right: 35px;
       top: 40px;
       width: 154px;
-      height: 217px;
+      height: 201px;
       .block-item {
         padding: 15px 0px;
       }
