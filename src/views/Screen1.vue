@@ -36,6 +36,8 @@
             :class="{'col-sm-12': playerLength == 1,'col-sm-6': playerLength == 4,'col-sm-4': playerLength == 9,'col-sm-3': playerLength == 16,'classIndex':index == numindex}"
             @click="contorl(index)"
             @dblclick="ondblclick(index)"
+            @drop="drop($event, index)"
+            @dragover="allowDrag($event)"
           >
             <LivePlayer
               :videoUrl="player.url"
@@ -164,6 +166,16 @@ export default {
     this.setPlayerLength(this.playerLength);
   },
   methods: {
+    drop(ev, index) {
+      console.log(123);
+      console.log(index);
+      this.numindex = index
+      ev.preventDefault();
+      let treeNode = ev.target;
+    },
+    allowDrag(ev) {
+      ev.preventDefault();
+    },
     ondblclick(index) {
       if (this.urlData) {
         this.players[index].name = "ffff";

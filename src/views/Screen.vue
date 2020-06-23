@@ -28,7 +28,7 @@
           <el-button
             type="primary"
             icon="el-icon-search"
-            @click="sxt_treeDemo"
+            @click="searchNode"
           >搜索</el-button>
         </div>
         <div
@@ -36,11 +36,55 @@
           id="test"
           class="tagtree tree-body"
         >
-          <ul
+          <!-- <ul
             id="sxt_treeDemo"
+            @dragstart="drag($event)"
+            @dragend="endDrag($event)"
             class="ztree topnav_box"
           >
-          </ul>
+          </ul> -->
+          <el-tree
+            :data="treeOptions"
+            :allow-drop="allowDrop"
+            :filter-node-method="filterNode"
+            :props="defaultProps"
+            node-key="name"
+            :default-expanded-keys="['全国']"
+            :highlight-current="false"
+            class="case__tree--modified"
+            :default-expand-all="false"
+            @node-drag-end="handleDragEnd"
+            draggable
+            ref="caseTree"
+          >
+            <span
+              :class="['custom-tree-node',true ?'selected-node':'']"
+              slot-scope="{ node, data }"
+            >
+              <!-- 
+              <el-tooltip
+                class="item"
+                effect="dark"
+                placement="top"
+                v-if="(node.label.length > 12 )"
+              >
+                <span slot="content">{{node.label}}</span>
+                <span
+                  @click="nodeClick(node, data)"
+                  @dblclick="nodeDbClick(node, data)"
+                  class="text-hidden">
+                  {{ node.label }}
+                </span>
+              </el-tooltip> -->
+              <div
+                class="text-hidden"
+                @click="nodeClick(node, data)"
+                @dblclick="nodeDbClick(node, data)"
+                v-if="!(node.label.length > 1200)"
+              >{{ node.label }}
+              </div>
+            </span>
+          </el-tree>
         </div>
       </div>
     </section>
@@ -414,6 +458,11 @@ export default {
   data() {
     return {
       isShow: false,
+      treeOptions: [],
+      defaultProps: {
+        children: "children",
+        label: "name"
+      },
       input: "",
       ytkzbg_3: {
         backgroundImage: "url(" + require("../assets/img/b_l.png") + ")"
@@ -498,8 +547,10 @@ export default {
           // beforeClick: this.beforeClick,
           onClick: this.zTreeOnClick,
           onCheck: this.zTreeOnCheck,
-          beforeDrag: this.beforeDrag,
-          beforeDrop: this.beforeDrop,
+          // beforeDrag: this.beforeDrag,
+          // beforeDrop: this.beforeDrop,
+          onDragstart: this.drag,
+          onDragend: this.endDrag,
           onDrop: this.zTreeOnDrop,
           onDblClick: this.ondblclick
         }
@@ -519,6 +570,75 @@ export default {
     this.VideoType();
   },
   methods: {
+    searchNode() {
+      const me = this;
+      me.$refs.caseTree.filter(this.input);
+    },
+    allowDrop(draggingNode, dropNode, type) {
+      // treeOptionsObj 树的最后子节点，可拖拽的节点rue
+      //
+      //
+      return false;
+    },
+    allowDrag(draggingNode) {
+      // voidObj 不可拖拽的节点，包括案号节点，二级节点，和文书作废的子节点
+      if (true) {
+        return true;
+      } else {
+        return true;
+      }
+    },
+    nodeClick(node, data) {
+      // voidObj 不可拖拽的节点，包括案号节点，二级节点，和文书作废的子节点
+      if (node.isLeaf) {
+        this.Camerainformation(data.uuid); // 获取摄像头信息
+        this.jp(data.uuid);
+      }
+    },
+    // 节点搜索过滤
+    filterNode(value, data) {
+      if (!value) {
+        return true;
+      }
+      if (data.name) {
+        return data.name.indexOf(value) !== -1;
+      }
+      return data.name.indexOf(value) !== -1;
+    },
+    drag(ev) {
+      console.log(12312);
+      console.log(ev);
+    },
+    handleDragEnd(draggingNode, dropNode, dropType, ev) {
+      console.log(draggingNode);
+      console.log(dropNode);
+      console.log(dropType);
+      console.log(ev);
+      if (draggingNode.isLeaf) {
+        this.Camerainformation(draggingNode.data.uuid); // 获取摄像头信息
+        this.jp(draggingNode.data.uuid);
+        this.nodes(
+          draggingNode.data.department,
+          draggingNode.data.uuid,
+          draggingNode.data
+        );
+      }
+      // this.$nextTick(() => {
+      //   this.dragsEvent();
+      // });
+    },
+    dragsEvent() {
+      let arr = document.querySelectorAll("a.level3");
+      arr[0].draggable = true;
+      arr[0].dragstart = this.drag;
+      arr[0].dragend = this.endDrag;
+      // console.log(arr);
+      arr.forEach(item => {
+        item.draggable = true;
+        item.dragstart = this.drag;
+        item.dragend = this.endDrag;
+      });
+    },
     nodes: function(department, uuid, treeNodes) {
       if (treeNodes.length === undefined) {
         department = treeNodes.department;
@@ -549,6 +669,13 @@ export default {
           console.log(err);
         });
     },
+    nodeDbClick(node, data) {
+      if (node.isLeaf) {
+        this.Camerainformation(data.uuid); // 获取摄像头信息
+        this.jp(data.uuid);
+        this.nodes(data.department, data.uuid, data);
+      }
+    },
     ondblclick: function(event, treeId, treeNodes) {
       // 获取选中的节点
       this.Camerainformation(treeNodes.uuid); // 获取摄像头信息
@@ -568,17 +695,19 @@ export default {
       axios
         .get("/service/map.getmapztree?keyword=" + this.input)
         .then(res => {
-          let zTree = $.fn.zTree.init(
-            $("#sxt_treeDemo"),
-            this.setting,
-            res.data[0]
-          );
-          if (name === "") {
-            zTree.expandAll(false);
-            zTree.expandNode(zTree.getNodes()[0], true, false, true);
-          } else {
-            zTree.expandAll(true);
-          }
+          this.treeOptions = res.data;
+          console.log(res.data[0]);
+          // let zTree = $.fn.zTree.init(
+          //   $("#sxt_treeDemo"),
+          //   this.setting,
+          //   res.data[0]
+          // );
+          // if (name === "") {
+          //   zTree.expandAll(false);
+          //   zTree.expandNode(zTree.getNodes()[0], true, false, true);
+          // } else {
+          //   zTree.expandAll(true);
+          // }
         })
         .catch(err => {
           console.log(err);
@@ -860,19 +989,24 @@ export default {
       isCopy
     ) {
       // 获取选中的节点
+      console.log(1231312);
       this.Camerainformation(treeNodes[0].uuid); // 获取摄像头信息
       this.jp(treeNodes[0].uuid);
       this.nodes(treeNodes[0].department, treeNodes[0].uuid, treeNodes);
     },
     beforeDrop: function(treeId, treeNodes, targetNode, moveType) {
+      console.log(1231);
       return targetNode ? targetNode.drop !== false : true;
     },
     zTreeOnClick(event, treeId, treeNode) {
       if (treeNode.children > 0) {
         return;
       }
-      var zTree = $.fn.zTree.getZTreeObj("sxt_treeDemo");
-      zTree.expandNode(treeNode);
+      // var zTree = $.fn.zTree.getZTreeObj("sxt_treeDemo");
+      // zTree.expandNode(treeNode);
+      // this.$nextTick(() => {
+      //   this.dragsEvent();
+      // });
       // 获取选中的节点
       // this.Camerainformation(treeNode.uuid)// 获取摄像头信息
       // this.jp(treeNode.uuid)
@@ -1031,6 +1165,19 @@ table tr:nth-child(even) {
       background-color: transparent;
       border: 1px solid #3c69d2;
       color: #ffffff;
+      font-size: 14px;
+    }
+
+    .el-input__inner {
+      height: 40px;
+      line-height: 40px;
+      border-radius: 4px;
+    }
+    .el-button {
+      font-weight: 500;
+      padding: 12px 20px;
+      font-size: 14px;
+      border-radius: 4px;
     }
   }
 
@@ -1043,6 +1190,95 @@ table tr:nth-child(even) {
     -moz-opacity: 0.9;
     opacity: 0.9;
     float: left;
+    height: 98%;
+
+    .el-tree-node:focus > .el-tree-node__content {
+      background-color: transparent !important;
+      .text-hidden {
+        background: #6f709d;
+        color: #fff;
+      }
+    }
+    .el-tree-node.is-focus > .el-tree-node__content {
+      background-color: transparent !important;
+      .text-hidden {
+        background: #6f709d;
+        color: #fff;
+      }
+    }
+    .el-tree-node.is-current > .el-tree-node__content {
+      background-color: transparent !important;
+      .text-hidden {
+        background: #6f709d;
+        color: #fff;
+      }
+    }
+
+    .el-tree-node__content:hover {
+      background-color: transparent !important;
+    }
+
+    .el-tree {
+      background: transparent;
+      overflow-y: auto;
+      overflow-x: auto;
+      height: 100%;
+      color: #fff;
+      margin-top: 16px;
+      margin-left: 20px;
+
+      .el-tree-node__content {
+        height: 34px;
+      }
+      .el-tree-node {
+        width: 580px;
+      }
+      .el-tree-nod::-webkit-scrollbar {
+        width: 4px; /*对垂直流动条有效*/
+      }
+      .el-tree-nod::-webkit-scrollbar-thumb {
+        background-color: red;
+      }
+    }
+    .el-tree .el-tree-node__expand-icon.expanded {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    // //有子节点 且未展开
+    .el-tree .el-icon-caret-right:before {
+      width: 26px;
+      height: 28px;
+      font-size: 16px;
+      background-size: 16px;
+    }
+    // //有子节点 且已展开
+    .el-tree .el-tree-node__expand-icon.expanded.el-icon-caret-right:before {
+      width: 26px;
+      height: 28px;
+      font-size: 16px;
+      background-size: 16px;
+    }
+    //没有子节点
+    .el-tree .el-tree-node__expand-icon.is-leaf::before {
+      width: 26px;
+      height: 28px;
+      font-size: 16px;
+      background-size: 16px;
+    }
+
+    .el-tree::-webkit-scrollbar {
+      width: 6px; /*对垂直流动条有效*/
+      height: 6px;
+      cursor: pointer;
+    }
+    .el-tree::-webkit-scrollbar-thumb {
+      background-color: #409eff;
+      border-radius:3px;
+    }
+
+    .is-current {
+      background: transparent !important;
+    }
 
     .topnav_box {
       height: 820px;

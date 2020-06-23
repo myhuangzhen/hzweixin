@@ -1097,6 +1097,27 @@ a {
 
 }
 
+.el-tree .el-tree-node__expand-icon.is-leaf::before
+{
+    background: url("../img/ztree_1.png") no-repeat 0 3px;
+    content: '';
+    display: inline-block;
+}
+
+.el-tree .el-icon-caret-right:before
+{
+    background: url("../img/ztree+.png") no-repeat 0 3px;
+    content: '';
+    display: inline-block;
+}
+
+.el-tree .el-tree-node__expand-icon.expanded.el-icon-caret-right:before
+{
+    background: url("../img/ztree-.png") no-repeat 0 3px;
+    content: '';
+    display: inline-block;
+}
+
 @keyframes scaleBig {
 	0% {
 		-webkit-transform: scale(0) translateZ(0);
