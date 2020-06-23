@@ -658,7 +658,13 @@ export default {
         .then(stream => {
           var uuid = treeNodes.uuid;
           if (stream.data.code !== 200) {
-            this.$message.error("视频源异常");
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: '视频源异常',
+              customClass: 'err-message',
+              duration: 10000000
+            })
           } else {
             var videoUrl = stream.data.videoRequestUrl[0].flv_url;
             var arr = [uuid, videoUrl];
@@ -1545,6 +1551,31 @@ table tr:nth-child(even) {
     .item5 {
       padding: 5px 0px;
     }
+  }
+}
+.err-message {
+  top: 20px !important;
+  min-width: 380px !important;
+  padding: 15px 15px 15px 20px !important;
+  border-radius: 4px !important;
+  .el-icon-error {
+    font: 15px/21px Arial, Helvetica, simsun, sans-serif;
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+  }
+  .el-icon-error:before {
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 14px !important;
+  }
+
+  .el-message__content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-right: 16px;
+    font-size: 16px !important;
+    
   }
 }
 </style>
